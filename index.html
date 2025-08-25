@@ -12,122 +12,128 @@
     
     <style>
         :root {
-            /* Engaging color palette */
-            --bg-light: #f9fafb; --text-light-primary: #111827; --text-light-secondary: #4b5563; --card-light: #ffffff; --border-light: #e5e7eb;
-            --bg-dark: #111827; --text-dark-primary: #f9fafb; --text-dark-secondary: #9ca3af; --card-dark: #1f2937; --border-dark: #374151;
-            --accent: #ec0d09;      /* Primary Accent: Violet-700 */
-            --accent-hover: #5b21b6; /* Darker Violet for hover */
-            --secondary-accent: #0d9488; /* Teal-600 */
+            --bg-light: #f9fafb; --text-light-primary: #111827; --text-light-secondary: #374151; --card-light: #ffffff; --border-light: #e5e7eb;
+            --accent: #fd3030; --accent-hover: #5b21b6;
         }
         html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); color: var(--text-light-primary); transition: background-color 0.3s ease, color 0.3s ease; }
-        .dark body { background-color: var(--bg-dark); color: var(--text-dark-primary); }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-light); color: var(--text-light-primary); }
         .text-secondary { color: var(--text-light-secondary); }
-        .dark .text-secondary { color: var(--text-dark-secondary); }
         .card { background-color: var(--card-light); border: 1px solid var(--border-light); transition: all 0.3s ease; }
-        .dark .card { background-color: var(--card-dark); border-color: var(--border-dark); }
         .page { display: none; animation: fadeIn 0.5s ease-in-out; }
         .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .nav-link.active { color: var(--accent); font-weight: 700; }
-        .hero-bg {
-            background-color: #111827;
-            background-image: url('https://images.unsplash.com/photo-1554475901-4538adf3992d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-position: center;
-        }
-        .hero-image-container { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { translateY(0px); } }
         .gradient-text {
-            background: linear-gradient(90deg, var(--accent), #d946ef, var(--accent)); /* Violet to Fuchsia */
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background: linear-gradient(90deg, var(--accent), #d946ef, var(--accent));
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             animation: gradient-flow 5s linear infinite;
         }
         @keyframes gradient-flow { to { background-position: 200% center; } }
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--accent);
+        
+        .hero-section { background-color: #111827; position: relative; overflow: hidden; }
+        .blob-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; filter: blur(80px); }
+        .blob { position: absolute; border-radius: 50%; opacity: 0.7; animation-iteration-count: infinite; animation-timing-function: ease-in-out; animation-name: move-blob-1, color-cycle; }
+        .blob:nth-child(1) { width: 400px; height: 400px; top: -50px; left: -100px; animation-duration: 40s, 20s; }
+        .blob:nth-child(2) { width: 300px; height: 300px; top: 150px; right: -50px; animation-name: move-blob-2, color-cycle; animation-duration: 50s, 25s; animation-delay: -5s, -5s; }
+        .blob:nth-child(3) { width: 350px; height: 350px; bottom: -150px; left: 100px; animation-name: move-blob-3, color-cycle; animation-duration: 45s, 30s; animation-delay: -2s, -10s; }
+
+        @keyframes color-cycle { 0% { background-color: #8b5cf6; } 20% { background-color: #ec4899; } 40% { background-color: #f59e0b; } 60% { background-color: #10b981; } 80% { background-color: #3b82f6; } 100% { background-color: #8b5cf6; } }
+        @keyframes move-blob-1 { 0%, 100% { transform: scale(1) translate(0px, 0px); } 33% { transform: scale(1.1) translate(40px, -80px); } 66% { transform: scale(0.9) translate(-50px, 60px); } }
+        @keyframes move-blob-2 { 0%, 100% { transform: scale(1) translate(0px, 0px); } 33% { transform: scale(1.2) translate(-60px, 90px); } 66% { transform: scale(0.8) translate(70px, -40px); } }
+        @keyframes move-blob-3 { 0%, 100% { transform: scale(1) translate(0px, 0px); } 33% { transform: scale(1.1) translate(-90px, -50px); } 66% { transform: scale(0.9) translate(40px, 80px); } }
+
+        .btn { position: relative; overflow: hidden; transition: all 0.3s ease; z-index: 1; }
+        .btn-shine::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 20px; height: 200%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(25deg); transition: left 0.6s ease;
         }
-        .dark .stat-number {
-            color: #a78bfa; /* Lighter violet for dark mode */
+        .btn-shine:hover::after { left: 120%; }
+        .btn-outline { position: relative; }
+        .btn-outline::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit; border: 2px solid transparent; transition: all 0.4s ease; }
+        .btn-outline:hover::before { border-color: white; transform: scale(1.05); }
+        
+        #register-modal { transition: opacity 0.3s ease-in-out; }
+        .form-input { transition: all 0.2s ease-in-out; }
+        .button-loading::after { content: ''; position: absolute; width: 16px; height: 16px; top: 0; left: 0; right: 0; bottom: 0; margin: auto; border: 4px solid transparent; border-top-color: #ffffff; border-radius: 50%; animation: button-loading-spinner 1s ease infinite; }
+        @keyframes button-loading-spinner { from { transform: rotate(0turn); } to { transform: rotate(1turn); } }
+        
+        #success-toast {
+            position: fixed; top: 1.5rem; right: 1.5rem;
+            background-color: #10b981; color: white; padding: 1rem 1.5rem; border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            transform: translateX(calc(100% + 1.5rem)); transition: transform 0.5s ease-in-out;
+            z-index: 200; opacity: 0; pointer-events: none;
         }
+        #success-toast.show { opacity: 1; transform: translateX(0); }
     </style>
 </head>
 <body class="antialiased">
 
-    <header class="bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800">
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 border-b border-slate-200">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="#home" class="font-bold text-xl text-violet-600 nav-link-main">Sankalpify</a>
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="#home" class="nav-link text-base hover:text-violet-600 transition-colors">Home</a>
-                    <a href="#contents" class="nav-link text-base hover:text-violet-600 transition-colors">Contents</a>
-                    <a href="#gallery" class="nav-link text-base hover:text-violet-600 transition-colors">Gallery</a>
+                    <a href="#contents" class="nav-link text-base hover:text-violet-600 transition-colors">Courses</a>
                     <a href="#team" class="nav-link text-base hover:text-violet-600 transition-colors">The Team</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                     <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"><svg id="theme-icon-sun" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg><svg id="theme-icon-moon" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg></button>
-                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-slate-200 dark:hover:bg-slate-800"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button>
+                     <button id="mobile-menu-button" class="md:hidden p-2 rounded-md hover:bg-slate-200"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg></button>
                 </div>
             </div>
         </nav>
     </header>
-
-    <div id="mobile-menu" class="fixed inset-0 bg-white dark:bg-slate-950 z-40 flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none"><a href="#home" class="mobile-nav-link text-3xl font-bold">Home</a><a href="#contents" class="mobile-nav-link text-3xl font-bold">Contents</a><a href="#gallery" class="mobile-nav-link text-3xl font-bold">Gallery</a><a href="#team" class="mobile-nav-link text-3xl font-bold">The Team</a></div>
+    <div id="mobile-menu" class="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 opacity-0 pointer-events-none"><a href="#home" class="mobile-nav-link text-3xl font-bold">Home</a><a href="#contents" class="mobile-nav-link text-3xl font-bold">Courses</a><a href="#team" class="mobile-nav-link text-3xl font-bold">The Team</a></div>
 
     <main>
         <div id="page-home" class="page">
-            <section class="relative py-32 md:py-48 overflow-hidden text-center text-white"><div class="absolute inset-0 hero-bg"></div><div class="absolute inset-0 bg-black opacity-60"></div><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" data-aos="fade-up"><h1 class="text-5xl md:text-7xl font-extrabold mt-2 gradient-text">Sankalpify</h1><p class="mt-4 text-xl md:text-2xl text-slate-200">Your one-stop destination for mastering the most in-demand tech skills and building a future-proof career.</p><div class="mt-8 flex flex-wrap gap-4 justify-center"><a href="#contents" class="nav-link-action bg-violet-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-violet-700 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">Explore Courses</a><a href="#team" class="nav-link-action bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-3 rounded-lg hover:bg-white/30 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">Meet the Team</a></div></div></section>
-            
+            <section class="hero-section py-32 md:py-48 text-center text-white">
+                <div class="blob-container" aria-hidden="true"><div class="blob"></div><div class="blob"></div><div class="blob"></div></div>
+                <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" data-aos="fade-up">
+                    <h1 class="text-5xl md:text-7xl font-extrabold mt-2 gradient-text">Sankalpify</h1>
+                    <p class="mt-4 text-xl md:text-2xl text-slate-200">Your one-stop destination for mastering the most in-demand tech skills and building a future-proof career.</p>
+                    <div class="mt-8 flex flex-wrap gap-4 justify-center">
+                        <a href="#contents" class="nav-link-action btn btn-shine bg-violet-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-violet-700 shadow-lg transform hover:-translate-y-1">Explore Courses</a>
+                        <a href="#team" class="nav-link-action btn btn-outline bg-white/20 backdrop-blur-sm text-white font-semibold px-8 py-3 rounded-lg hover:bg-white/30 shadow-lg transform hover:-translate-y-1">Meet the Team</a>
+                    </div>
+                </div>
+            </section>
             <section class="py-20" data-aos="fade-up">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center">
-                        <h2 class="text-3xl font-bold">Courses We Offer</h2>
+                        <h2 class="text-3xl font-bold">Popular Courses</h2>
                         <p class="mt-2 text-lg text-secondary">Hand-picked courses designed to get you hired. Click to learn more.</p>
                     </div>
-                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <a href="#course-dsa" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2"><img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Data Structures & Algorithms</h3><p class="text-secondary mt-2">Master the foundational concepts of programming and ace your coding interviews.</p></div></a>
-                        <a href="#course-ml" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2"><img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Machine Learning</h3><p class="text-secondary mt-2">Dive into the world of predictive modeling and build intelligent applications.</p></div></a>
-                        <a href="#course-da" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Data Analysis</h3><p class="text-secondary mt-2">Learn to extract, clean, analyze, and visualize data to drive business insights.</p></div></a>
-                        <a href="#course-py" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100"><img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Python</h3><p class="text-secondary mt-2">Master the versatile programming language that powers web dev, data science, and more.</p></div></a>
-                        <a href="#course-ai" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200"><img src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Artificial Intelligence</h3><p class="text-secondary mt-2">Explore the frontiers of AI, from neural networks to natural language processing.</p></div></a>
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <a href="#course-dsa" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2"><img src="dsa.png" class="w-full h-48 object-cover" alt="Data Structures & Algorithms"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Data Structures & Algorithms</h3></div></a>
+                        <a href="#course-ml" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2"><img src="ml.png" class="w-full h-48 object-cover" alt="Machine Learning"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Machine Learning</h3></div></a>
+                        <a href="#course-py" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2"><img src="pp.png" class="w-full h-48 object-cover" alt="Python Programming"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Python Programming</h3></div></a>
+                        <a href="#course-sql" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2"><img src="sql.png" class="w-full h-48 object-cover" alt="SQL Mastery"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">SQL Mastery</h3></div></a>
                     </div>
                 </div>
             </section>
-            
-            <section class="py-20 bg-white dark:bg-slate-900/50" data-aos="fade-up">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center"><h2 class="text-3xl font-bold">Perks of Learning With Us</h2><p class="mt-2 text-lg text-secondary">We provide more than just courses. We provide a career launchpad.</p></div>
-                    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                        <div class="card p-8"><div class="text-violet-500 mb-4"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg></div><h3 class="text-xl font-bold">Course Completion Certificate</h3><p class="mt-2 text-secondary">Validate your new skills with an official certificate recognized by industry partners.</p></div>
-                        <div class="card p-8"><div class="text-violet-500 mb-4"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg></div><h3 class="text-xl font-bold">Letter of Recommendation</h3><p class="mt-2 text-secondary">Top-performing students receive a personalized LOR from our CEO to boost their profile.</p></div>
-                        <div class="card p-8"><div class="text-violet-500 mb-4"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"></path></svg></div><h3 class="text-xl font-bold">Project Completion Certificate</h3><p class="mt-2 text-secondary">Showcase your practical abilities with a dedicated certificate for your major project.</p></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-20" data-aos="fade-up">
+            <section class="py-20 bg-white" data-aos="fade-up">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
-                    <div><h2 class="text-3xl font-bold">Don't Just Learn. Become <span class="text-violet-600">Industry-Ready.</span></h2><p class="mt-4 text-lg text-secondary leading-relaxed">The tech industry demands more than theoretical knowledge. It demands practical skills, problem-solving abilities, and hands-on experience. Standard academic curriculums often leave a gap. That's where we come in. Our courses are designed with one goal: to bridge that gap and make you the candidate that companies want to hire.</p><ul class="mt-6 space-y-4 text-secondary">
-                        <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong class="text-slate-800 dark:text-slate-200">Real-World Projects:</strong> Build a portfolio that speaks volumes about your capabilities.</span></li>
-                        <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong class="text-slate-800 dark:text-slate-200">Expert-Led Training:</strong> Learn from professionals who have worked in the roles you aspire to.</span></li>
-                        <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong class="text-slate-800 dark:text-slate-200">Interview Preparation:</strong> We go beyond the code, preparing you for technical and behavioral interviews.</span></li>
-                    </ul></div>
-                    <div class="rounded-lg overflow-hidden shadow-2xl"><img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Team collaborating" class="w-full h-full object-cover"></div>
+                    <div><h2 class="text-3xl font-bold">Don't Just Learn. Become <span class="text-violet-600">Industry-Ready.</span></h2><p class="mt-4 text-lg text-secondary leading-relaxed">Standard academic curriculums often leave a gap. Our courses are designed with one goal: to bridge that gap and make you the candidate that companies want to hire.</p>
+                        <ul class="mt-6 space-y-4">
+                            <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong>Real-World Projects:</strong><span class="text-secondary"> Build a portfolio that speaks volumes about your capabilities.</span></span></li>
+                            <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong>Expert-Led Training:</strong><span class="text-secondary"> Learn from professionals who have worked in the roles you aspire to.</span></span></li>
+                            <li class="flex items-start"><span class="text-teal-500 mr-3 mt-1">&#10003;</span><span><strong>Interview Preparation:</strong><span class="text-secondary"> We go beyond the code, preparing you for technical and behavioral interviews.</span></span></li>
+                        </ul>
+                    </div>
+                    <div class="rounded-lg overflow-hidden shadow-2xl"><img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDBfHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Team collaborating" class="w-full h-full object-cover"></div>
                 </div>
             </section>
-
-            <section class="py-20 bg-violet-600 dark:bg-violet-800 text-white" data-aos="fade-up">
+            <section class="py-20 bg-violet-600 text-white" data-aos="fade-up">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-3xl font-bold">About Sankalpify: A Revolution in Tech Education</h2>
-                    <p class="mt-4 text-lg max-w-3xl mx-auto text-violet-200">Sankalpify wasn't born in a boardroom; it was born from a simple resolution: to make high-quality, job-oriented tech education accessible to all. We saw brilliant students held back by outdated syllabi and a lack of practical exposure. We decided to change that. We are not just a platform; we are a community dedicated to building the next generation of tech leaders.</p>
+                    <h2 class="text-3xl font-bold">Why Choose Sankalpify?</h2>
+                    <p class="mt-4 text-lg max-w-3xl mx-auto text-violet-200">We're not just another course provider. We are your dedicated career partners. Our methodology is built on a foundation of mentorship and real-world application, ensuring that what you learn is what the industry demands.</p>
                     <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-8 items-start">
-                        <div><p class="stat-number">95%</p><p class="mt-1 text-violet-200">Placement Assistance Rate</p></div>
-                        <div class="text-violet-300"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg><p class="mt-2 text-violet-200 font-semibold">Dedicated Hiring Assistance</p></div>
-                        <div class="text-violet-300"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg><p class="mt-2 text-violet-200 font-semibold">Industry Vetted Curriculum</p></div>
+                        <div class="text-violet-300"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a3.002 3.002 0 01-2.732 2.732M11 16V7a3 3 0 016 0v9M11 16H9m12 4v-2c0-.656-.126-1.283-.356-1.857M9 16v-2c0-.656.126-1.283.356-1.857m0 0a3.002 3.002 0 002.732 2.732M3 11V9a3 3 0 016 0v2m0 0V7a3 3 0 016 0v4"/></svg><p class="mt-4 text-xl text-white font-semibold">1-on-1 Mentorship</p><p class="mt-1 text-violet-200">Direct guidance from industry experts to resolve your doubts and shape your career path.</p></div>
+                        <div class="text-violet-300"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><p class="mt-4 text-xl text-white font-semibold">Live Project Building</p><p class="mt-1 text-violet-200">Go beyond theory by building two complete projects (minor & major) from scratch.</p></div>
+                        <div class="text-violet-300"><svg class="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg><p class="mt-4 text-xl text-white font-semibold">Career Workshops</p><p class="mt-1 text-violet-200">Exclusive sessions on resume building, interview skills, and LinkedIn optimization.</p></div>
                     </div>
                 </div>
             </section>
@@ -135,137 +141,139 @@
 
         <div id="page-contents" class="page py-20"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
             <section data-aos="fade-up">
-                <h2 class="text-4xl font-bold text-center">Our Courses</h2>
-                <p class="text-xl text-secondary text-center mt-2">Explore our expert-led courses designed to launch your tech career.</p>
+                <h2 class="text-4xl font-bold text-center">All Courses</h2>
+                <p class="text-xl text-secondary text-center mt-2">Find the perfect course to launch your tech career. All courses are just ₹499.</p>
             </section>
             
-            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <a href="#course-dsa" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up"><img src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Data Structures & Algorithms</h3><p class="text-secondary mt-2">Master the foundational concepts of programming and ace your coding interviews.</p></div></a>
-                <a href="#course-ml" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100"><img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Machine Learning</h3><p class="text-secondary mt-2">Dive into the world of predictive modeling and build intelligent applications.</p></div></a>
-                <a href="#course-da" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Data Analysis</h3><p class="text-secondary mt-2">Learn to extract, clean, analyze, and visualize data to drive business insights.</p></div></a>
-                <a href="#course-py" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300"><img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Python</h3><p class="text-secondary mt-2">Master the versatile programming language that powers web dev, data science, and more.</p></div></a>
-                <a href="#course-ai" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400"><img src="https://images.unsplash.com/photo-1677756119517-756a188d2d94?auto=format&fit=crop&w=800&q=60" class="w-full h-48 object-cover"><div class="p-6"><h3 class="text-2xl font-bold group-hover:text-violet-600 transition-colors">Artificial Intelligence</h3><p class="text-secondary mt-2">Explore the frontiers of AI, from neural networks to natural language processing.</p></div></a>
+            <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <a href="#course-dsa" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up"><img src="dsa.png" class="w-full h-48 object-cover" alt="Data Structures & Algorithms"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Data Structures & Algorithms</h3></div></a>
+                <a href="#course-ml" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100"><img src="ml.png" class="w-full h-48 object-cover" alt="Machine Learning"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Machine Learning</h3></div></a>
+                <a href="#course-da" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200"><img src="da.png" class="w-full h-48 object-cover" alt="Data Analysis"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Data Analysis</h3></div></a>
+                <a href="#course-py" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300"><img src="pp.png" class="w-full h-48 object-cover" alt="Python Programming"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Python Programming</h3></div></a>
+                <a href="#course-ai" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up"><img src="ai.png" class="w-full h-48 object-cover" alt="Artificial Intelligence"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Artificial Intelligence</h3></div></a>
+                <a href="#course-langchain" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100"><img src="lc.png" class="w-full h-48 object-cover" alt="LangChain & LLMs"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">LangChain & LLMs</h3></div></a>
+                <a href="#course-dl" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200"><img src="dl.png" class="w-full h-48 object-cover" alt="Deep Learning"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Deep Learning</h3></div></a>
+                <a href="#course-powerbi" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300"><img src="pb.png" class="w-full h-48 object-cover" alt="Power BI"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Power BI</h3></div></a>
+                <a href="#course-excel" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up"><img src="ae.png" class="w-full h-48 object-cover" alt="Advanced Excel"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Advanced Excel</h3></div></a>
+                <a href="#course-sql" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100"><img src="sql.png" class="w-full h-48 object-cover" alt="SQL Mastery"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">SQL Mastery</h3></div></a>
+                <a href="#course-communication" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200"><img src="cs.png" class="w-full h-48 object-cover" alt="Communication Skills"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Communication Skills</h3></div></a>
+                <a href="#course-jobprep" class="nav-link-action card p-0 overflow-hidden group block hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300"><img src="jp.png" class="w-full h-48 object-cover" alt="Job Preparation"><div class="p-6"><h3 class="text-xl font-bold group-hover:text-violet-600 transition-colors">Job Preparation</h3></div></a>
             </section>
         </div></div>
-
-        <div id="page-gallery" class="page py-20"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><section data-aos="fade-up"><h2 class="text-4xl font-bold text-center">Gallery Highlights</h2><p class="text-xl text-secondary text-center mt-2">Highlights from our course-building and training sessions with learners.</p></section><div id="gallery-grid" class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"></div></div></div>
 
         <div id="page-team" class="page py-20">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <section data-aos="fade-up">
                     <h2 class="text-4xl font-bold text-center">Meet the Team</h2>
-                    <p class="text-xl text-secondary text-center mt-2">Meet the brilliant minds behind Sankalpify's success.</p>
+                    <p class="text-xl text-secondary text-center mt-2">The brilliant minds behind Sankalpify's success.</p>
                 </section>
-                <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
                     <div class="card p-8 text-center hover:-translate-y-2" data-aos="fade-up" data-aos-delay="100">
-                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white dark:border-slate-800 object-cover" src="manas.png" alt="Manas Tripathi">
-                        <h4 class="mt-6 text-2xl font-bold text-violet-600">Manas Tripathi</h4>
-                        <p class="text-secondary mt-1">Founder & CEO</p>
+                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white object-cover" src="manas.png" alt="Manas Tripathi">
+                        <h4 class="mt-6 text-xl font-bold text-violet-600">Manas Tripathi</h4><p class="text-secondary mt-1">Founder & CEO</p>
                     </div>
                     <div class="card p-8 text-center hover:-translate-y-2" data-aos="fade-up" data-aos-delay="200">
-                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white dark:border-slate-800 object-cover" src="aniket.jpeg" alt="Aniket Singh">
-                        <h4 class="mt-6 text-2xl font-bold text-violet-600">Aniket Singh</h4>
-                        <p class="text-secondary mt-1">Academic Coordinator</p>
+                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white object-cover" src="aniket.jpeg" alt="Aniket Singh">
+                        <h4 class="mt-6 text-xl font-bold text-violet-600">Aniket Singh</h4><p class="text-secondary mt-1">Academic Coordinator</p>
                     </div>
                     <div class="card p-8 text-center hover:-translate-y-2" data-aos="fade-up" data-aos-delay="300">
-                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white dark:border-slate-800 object-cover" src="sheetal.jpeg" alt="Sheetal Prajapati">
-                        <h4 class="mt-6 text-2xl font-bold text-violet-600">Sheetal Prajapati</h4>
-                        <p class="text-secondary mt-1">Student Counselor</p>
+                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white object-cover" src="Abhishekh.jpeg" alt="Abhishekh Mishra">
+                        <h4 class="mt-6 text-xl font-bold text-violet-600">Abhishekh Mishra</h4><p class="text-secondary mt-1">Academics Coordinator</p>
                     </div>
                     <div class="card p-8 text-center hover:-translate-y-2" data-aos="fade-up" data-aos-delay="400">
-                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white dark:border-slate-800 object-cover" src="ajay.jpeg" alt="Ajay Pratap Singh">
-                        <h4 class="mt-6 text-2xl font-bold text-violet-600">Ajay Pratap Singh</h4>
-                        <p class="text-secondary mt-1">Admission Executive</p>
+                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white object-cover" src="sheetal.jpeg" alt="Sheetal Prajapati">
+                        <h4 class="mt-6 text-xl font-bold text-violet-600">Sheetal Prajapati</h4><p class="text-secondary mt-1">Student Counselor</p>
+                    </div>
+                    <div class="card p-8 text-center hover:-translate-y-2" data-aos="fade-up" data-aos-delay="500">
+                        <img class="w-32 h-32 mx-auto rounded-full shadow-lg border-4 border-white object-cover" src="ajay.jpeg" alt="Ajay Pratap Singh">
+                        <h4 class="mt-6 text-xl font-bold text-violet-600">Ajay Pratap Singh</h4><p class="text-secondary mt-1">Admission Executive</p>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div id="page-course-dsa" class="page py-20"><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to Courses</a><h2 class="text-4xl font-bold mt-4">Data Structures & Algorithms</h2><div class="card mt-8 p-8 space-y-8">
-            <div><h3 class="text-2xl font-bold">Why Learn DSA?</h3><p class="mt-2 text-secondary">DSA is the bedrock of computer science. Mastering it enables you to write efficient, optimized code and is a primary requirement for passing technical interviews at top tech companies like Google, Amazon, and Microsoft. It teaches you to think like a programmer and solve complex problems systematically.</p></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">What You'll Learn (1-Month Syllabus)</h3><ul class="mt-4 space-y-3 text-secondary">
-                <li><strong>Week 1:</strong> Intro to Complexity, Arrays, Linked Lists, Stacks & Queues.</li>
-                <li><strong>Week 2:</strong> Advanced DSA - Trees (Binary, BST), Heaps, Hashing.</li>
-                <li><strong>Week 3:</strong> Graph Algorithms (BFS, DFS), Sorting & Searching. Minor Project development.</li>
-                <li><strong>Week 4:</strong> Dynamic Programming, Greedy Algorithms, and Major Project implementation.</li>
-            </ul></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">Perks You'll Get</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course Completion Certificate</li><li>Letter of Recommendation (Performance-based)</li><li>Project Completion Certificate</li></ul></div>
-            <div class="text-center mt-8 pt-6 border-t border-border-light dark:border-border-dark"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹1049</p></div>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeojCeISaPTHJvp87ivPM9PA31QqBUAoIxglE9ILmRHD1OAjw/viewform?usp=dialog" target="_blank" class="block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700 transition-colors">Register Now</a></div></div></div>
-        <div id="page-course-ml" class="page py-20"><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to Courses</a><h2 class="text-4xl font-bold mt-4">Machine Learning</h2><div class="card mt-8 p-8 space-y-8">
-            <div><h3 class="text-2xl font-bold">Why Learn Machine Learning?</h3><p class="mt-2 text-secondary">ML is transforming every industry, from healthcare to finance. Learning ML equips you with the skills to build intelligent systems that can predict trends, automate tasks, and provide data-driven insights, making you a highly valuable asset in the modern job market.</p></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">What You'll Learn (1-Month Syllabus)</h3><ul class="mt-4 space-y-3 text-secondary">
-                <li><strong>Week 1:</strong> Python for ML (NumPy, Pandas), Data Preprocessing, Linear & Logistic Regression.</li>
-                <li><strong>Week 2:</strong> Supervised Learning (Decision Trees, SVM, KNN), Model Evaluation Metrics.</li>
-                <li><strong>Week 3:</strong> Unsupervised Learning (K-Means, PCA), Intro to Neural Networks. Minor Project.</li>
-                <li><strong>Week 4:</strong> Advanced Topics (Ensemble Methods), NLP/CV basics, and Major Project (End-to-End).</li>
-            </ul></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">Perks You'll Get</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course Completion Certificate</li><li>Letter of Recommendation (Performance-based)</li><li>Project Completion Certificate</li></ul></div>
-            <div class="text-center mt-8 pt-6 border-t border-border-light dark:border-border-dark"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹1049</p></div>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeojCeISaPTHJvp87ivPM9PA31QqBUAoIxglE9ILmRHD1OAjw/viewform?usp=dialog" target="_blank" class="block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700 transition-colors">Register Now</a></div></div></div>
-        <div id="page-course-da" class="page py-20"><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to Courses</a><h2 class="text-4xl font-bold mt-4">Data Analysis</h2><div class="card mt-8 p-8 space-y-8">
-            <div><h3 class="text-2xl font-bold">Why Learn Data Analysis?</h3><p class="mt-2 text-secondary">Data is the new oil, and data analysts are in high demand. This field allows you to uncover hidden patterns, trends, and insights from data to help businesses make smarter decisions. It's a critical skill for roles in marketing, finance, operations, and more.</p></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">What You'll Learn (1-Month Syllabus)</h3><ul class="mt-4 space-y-3 text-secondary">
-                <li><strong>Week 1:</strong> Intro to Data Analysis, Excel for Analysis, SQL for Data Retrieval.</li>
-                <li><strong>Week 2:</strong> Python with Pandas for Data Manipulation and Cleaning.</li>
-                <li><strong>Week 3:</strong> Data Visualization with Matplotlib & Seaborn, Statistical Analysis. Minor Project.</li>
-                <li><strong>Week 4:</strong> Building Interactive Dashboards (e.g., with Streamlit/Dash), Major Project.</li>
-            </ul></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">Perks You'll Get</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course Completion Certificate</li><li>Letter of Recommendation (Performance-based)</li><li>Project Completion Certificate</li></ul></div>
-            <div class="text-center mt-8 pt-6 border-t border-border-light dark:border-border-dark"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹849</p></div>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeojCeISaPTHJvp87ivPM9PA31QqBUAoIxglE9ILmRHD1OAjw/viewform?usp=dialog" target="_blank" class="block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700 transition-colors">Register Now</a></div></div></div>
-        <div id="page-course-py" class="page py-20"><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to Courses</a><h2 class="text-4xl font-bold mt-4">Python Programming</h2><div class="card mt-8 p-8 space-y-8">
-            <div><h3 class="text-2xl font-bold">Why Learn Python?</h3><p class="mt-2 text-secondary">Python is the Swiss Army knife of programming. Its simple syntax and vast library ecosystem make it the top choice for web development, data science, AI, automation, and more. Mastering Python opens up an incredible range of career opportunities across the tech landscape.</p></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">What You'll Learn (1-Month Syllabus)</h3><ul class="mt-4 space-y-3 text-secondary">
-                <li><strong>Week 1:</strong> Python Basics (Variables, Data Types, Loops), Functions and Modules.</li>
-                <li><strong>Week 2:</strong> Intermediate Python (File I/O, Error Handling), Object-Oriented Programming (OOP).</li>
-                <li><strong>Week 3:</strong> Intro to Web Scraping (BeautifulSoup), Working with APIs. Minor Project.</li>
-                <li><strong>Week 4:</strong> Building a Web Application with Flask/Django, and Major Project.</li>
-            </ul></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">Perks You'll Get</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course Completion Certificate</li><li>Letter of Recommendation (Performance-based)</li><li>Project Completion Certificate</li></ul></div>
-            <div class="text-center mt-8 pt-6 border-t border-border-light dark:border-border-dark"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹849</p></div>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeojCeISaPTHJvp87ivPM9PA31QqBUAoIxglE9ILmRHD1OAjw/viewform?usp=dialog" target="_blank" class="block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700 transition-colors">Register Now</a></div></div></div>
-        <div id="page-course-ai" class="page py-20"><div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to Courses</a><h2 class="text-4xl font-bold mt-4">Artificial Intelligence</h2><div class="card mt-8 p-8 space-y-8">
-            <div><h3 class="text-2xl font-bold">Why Learn Artificial Intelligence?</h3><p class="mt-2 text-secondary">AI is not just the future; it's the present. From self-driving cars to virtual assistants, AI is revolutionizing our world. Gaining skills in AI puts you at the forefront of innovation, allowing you to work on cutting-edge technologies that solve some of humanity's most complex problems.</p></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">What You'll Learn (1-Month Syllabus)</h3><ul class="mt-4 space-y-3 text-secondary">
-                <li><strong>Week 1:</strong> Foundations of AI, Search Algorithms, and Optimization Problems.</li>
-                <li><strong>Week 2:</strong> Deep Dive into Neural Networks & Deep Learning with TensorFlow/PyTorch.</li>
-                <li><strong>Week 3:</strong> Natural Language Processing (NLP) concepts and applications. Minor Project.</li>
-                <li><strong>Week 4:</strong> Computer Vision (CV) with OpenCV, and Major AI Project development.</li>
-            </ul></div><hr class="border-border-light dark:border-border-dark">
-            <div><h3 class="text-2xl font-bold">Perks You'll Get</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course Completion Certificate</li><li>Letter of Recommendation (Performance-based)</li><li>Project Completion Certificate</li></ul></div>
-            <div class="text-center mt-8 pt-6 border-t border-border-light dark:border-border-dark"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹899</p></div>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSeojCeISaPTHJvp87ivPM9PA31QqBUAoIxglE9ILmRHD1OAjw/viewform?usp=dialog" target="_blank" class="block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700 transition-colors">Register Now</a></div></div></div>
-    </main>
-
-    <footer class="bg-slate-900 text-slate-400 py-12 mt-20"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><p class="font-bold text-lg text-white">Sankalpify</p><p class="mt-2">Fueling futures with skills that matter.</p><p class="mt-6 text-sm">&copy; 2025 All Rights Reserved.</p></div></footer>
+        <div id="page-course-dsa" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Data Structures & Algorithms</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn DSA?</h3><p class="text-secondary">DSA is the universal language of problem-solving in computer science. It's the #1 skill assessed in technical interviews at top-tier companies. Mastering it doesn't just help you get a job—it makes you a fundamentally better, more efficient programmer.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Foundations - Big O Notation, Arrays, Linked Lists, Stacks, Queues.</li><li><strong>Week 2:</strong> Core Structures - Trees (Binary, BST), Heaps, Hashing, and their applications.</li><li><strong>Week 3:</strong> Advanced Topics - Graph Algorithms (BFS, DFS, Dijkstra's), Sorting & Searching.</li><li><strong>Week 4:</strong> Interview Prep - Dynamic Programming, Greedy Algorithms, and solving popular interview questions.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Data Structures & Algorithms">Register Now</button></div></div></div>
+        <div id="page-course-ml" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Machine Learning</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Machine Learning?</h3><p class="text-secondary">Machine Learning is the engine of the modern data-driven world, from recommendation systems to medical diagnoses. This course demystifies ML, giving you the practical ability to build intelligent models that make predictions and uncover insights from data.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> ML Foundations - Python libraries (NumPy, Pandas), Data Preprocessing, Linear & Logistic Regression.</li><li><strong>Week 2:</strong> Supervised Learning - Decision Trees, SVM, KNN, and Model Evaluation.</li><li><strong>Week 3:</strong> Unsupervised Learning - K-Means Clustering, PCA, and building a Minor Project.</li><li><strong>Week 4:</strong> Advanced Concepts - Ensemble Methods (Random Forest, XGBoost), and deploying your Major Project.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Machine Learning">Register Now</button></div></div></div>
+        <div id="page-course-da" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Data Analysis</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Data Analysis?</h3><p class="text-secondary">In a world flooded with data, the ability to extract meaningful insights is a superpower. This course equips you with the essential tools—SQL, Excel, and Python—to clean, analyze, and visualize data, helping businesses make smarter, data-driven decisions.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Foundations of Data - Advanced Excel functions, Pivot Tables, and core SQL queries.</li><li><strong>Week 2:</strong> Data Wrangling with Python - Mastering Pandas for data cleaning and manipulation.</li><li><strong>Week 3:</strong> Data Visualization - Creating insightful charts with Matplotlib and Seaborn.</li><li><strong>Week 4:</strong> Capstone Project - Analyzing a real-world dataset from start to finish and presenting findings.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Data Analysis">Register Now</button></div></div></div>
+        <div id="page-course-py" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Python Programming</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Python?</h3><p class="text-secondary">Python is the world's most popular programming language for a reason. Its simplicity and power make it the top choice for web development, data science, AI, and automation. Mastering Python opens doors to a vast range of career opportunities.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Python Fundamentals - Variables, Data Types, Loops, Functions, and Modules.</li><li><strong>Week 2:</strong> Intermediate Concepts - Object-Oriented Programming (OOP), File Handling, and Error Management.</li><li><strong>Week 3:</strong> Real-World Applications - Interacting with APIs and web scraping with BeautifulSoup.</li><li><strong>Week 4:</strong> Final Project - Building a complete command-line application or a simple web app with Flask.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Python Programming">Register Now</button></div></div></div>
+        <div id="page-course-ai" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Artificial Intelligence</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Artificial Intelligence?</h3><p class="text-secondary">AI is revolutionizing our world. Gaining skills in AI puts you at the forefront of innovation, allowing you to work on cutting-edge technologies that solve some of humanity's most complex problems, from natural language processing to computer vision.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Foundations of AI - Search Algorithms (BFS, DFS), Game Theory, and Optimization.</li><li><strong>Week 2:</strong> Introduction to Neural Networks and Deep Learning concepts with TensorFlow/PyTorch.</li><li><strong>Week 3:</strong> Natural Language Processing (NLP) - Building text classification and sentiment analysis models.</li><li><strong>Week 4:</strong> Computer Vision (CV) - Working with images and building a classification model with OpenCV.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Artificial Intelligence">Register Now</button></div></div></div>
+        <div id="page-course-langchain" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">LangChain & LLMs</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn LangChain?</h3><p class="text-secondary">Large Language Models (LLMs) like GPT are changing the world. LangChain is the leading framework for building powerful applications on top of them. Learn how to create chatbots, document analyzers, and intelligent agents with this cutting-edge technology.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Introduction to LLMs, Prompt Engineering, and setting up LangChain.</li><li><strong>Week 2:</strong> Core Components - Models, Prompts, and Output Parsers.</li><li><strong>Week 3:</strong> Building Chains and working with Indexes for custom data Q&A.</li><li><strong>Week 4:</strong> Creating autonomous Agents and building a final project like a research assistant bot.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="LangChain & LLMs">Register Now</button></div></div></div>
+        <div id="page-course-dl" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Deep Learning</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Deep Learning?</h3><p class="text-secondary">Deep Learning is the advanced subfield of AI behind self-driving cars, image recognition, and realistic AI art generation. This course takes you beyond basic machine learning into the world of complex neural networks, the key to solving next-generation problems.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> From Neurons to Networks - Understanding the building blocks of Deep Learning.</li><li><strong>Week 2:</strong> Deep Dive into TensorFlow/PyTorch for building and training models.</li><li><strong>Week 3:</strong> Convolutional Neural Networks (CNNs) for image classification tasks.</li><li><strong>Week 4:</strong> Recurrent Neural Networks (RNNs) for sequence data like text analysis. Final project.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Deep Learning">Register Now</button></div></div></div>
+        <div id="page-course-powerbi" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Power BI</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Power BI?</h3><p class="text-secondary">Power BI is Microsoft's industry-leading tool for business intelligence and data visualization. Learning it allows you to transform raw, boring data into beautiful, interactive dashboards that tell a story and drive critical business decisions—a skill every company needs.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Power BI Basics - Connecting to data sources and navigating the interface.</li><li><strong>Week 2:</strong> Data Modeling and Transformation using Power Query Editor.</li><li><strong>Week 3:</strong> Mastering DAX (Data Analysis Expressions) for custom calculations.</li><li><strong>Week 4:</strong> Designing and publishing compelling reports and dashboards. Final project.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Power BI">Register Now</button></div></div></div>
+        <div id="page-course-excel" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Advanced Excel</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Advanced Excel?</h3><p class="text-secondary">Excel is more than just a spreadsheet—it's the most widely used data tool in the world. Mastering its advanced features like Pivot Tables, VLOOKUP, and macros will dramatically boost your productivity and make you an indispensable asset in any professional role.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Advanced Functions - VLOOKUP, HLOOKUP, INDEX, MATCH, and logical functions.</li><li><strong>Week 2:</strong> Data Analysis Tools - Sorting, Filtering, Conditional Formatting, and What-If Analysis.</li><li><strong>Week 3:</strong> Mastering PivotTables and PivotCharts for data summarization.</li><li><strong>Week 4:</strong> Introduction to Macros and VBA for automating repetitive tasks. Final project.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Advanced Excel">Register Now</button></div></div></div>
+        <div id="page-course-sql" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">SQL Mastery</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn SQL?</h3><p class="text-secondary">SQL (Structured Query Language) is the universal language for communicating with databases. Whether you're a developer, analyst, or marketer, knowing SQL allows you to directly access and manipulate the data that powers modern applications and businesses.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Database Fundamentals - SELECT, FROM, WHERE, and basic filtering.</li><li><strong>Week 2:</strong> Advanced Queries - JOINs, GROUP BY, and Aggregate Functions.</li><li><strong>Week 3:</strong> Subqueries, Window Functions, and Common Table Expressions (CTEs).</li><li><strong>Week 4:</strong> Performance tuning and solving complex, real-world analytical problems. Final project.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="SQL Mastery">Register Now</button></div></div></div>
+        <div id="page-course-communication" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Communication Skills</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Learn Communication Skills?</h3><p class="text-secondary">Technical skills can get you the interview, but strong communication skills will get you the job—and the promotion. This course focuses on the crucial "soft skills" that help you present ideas clearly, collaborate effectively, and lead with confidence in any professional setting.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Foundations of Professional Communication - Clarity, Conciseness, and Confidence.</li><li><strong>Week 2:</strong> Written Communication - Crafting professional emails, reports, and messages.</li><li><strong>Week 3:</strong> Verbal Communication - Public speaking, presentation skills, and active listening.</li><li><strong>Week 4:</strong> Teamwork and Leadership - Negotiation, conflict resolution, and collaborative strategies.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Communication Skills">Register Now</button></div></div></div>
+        <div id="page-course-jobprep" class="page py-20"><div class="max-w-4xl mx-auto px-4"><a href="#contents" class="nav-link-action text-violet-600 hover:underline">&larr; Back to All Courses</a><h2 class="text-4xl font-bold mt-4">Job Preparation</h2><div class="card mt-8 p-8 space-y-8"><div><h3 class="text-2xl font-bold">Why Take a Job Prep Course?</h3><p class="text-secondary">Having the right skills is only half the battle. This comprehensive course prepares you for the entire job search process, from building a standout resume to acing your final HR interview. We give you the strategies and confidence needed to land your dream role.</p></div><hr><div><h3 class="text-2xl font-bold">What You'll Learn</h3><ul class="mt-4 space-y-3 text-secondary"><li><strong>Week 1:</strong> Crafting the Perfect Resume & Cover Letter for tech roles.</li><li><strong>Week 2:</strong> Building an All-Star LinkedIn Profile and networking strategies.</li><li><strong>Week 3:</strong> Mastering Behavioral Interviews and the STAR method.</li><li><strong>Week 4:</strong> Mock Interviews, salary negotiation tactics, and navigating job offers.</li></ul></div><hr><div><h3 class="text-2xl font-bold">Perks</h3><ul class="mt-4 space-y-2 text-secondary list-disc list-inside"><li>Course & Project Completion Certificates</li><li>Performance-based Letter of Recommendation</li></ul></div><div class="text-center mt-8 pt-6 border-t"><p class="text-secondary text-sm">One-time fee</p><p class="text-4xl font-bold text-violet-600 mt-1">₹499</p></div><button class="register-btn btn btn-shine block w-full text-center bg-violet-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-violet-700" data-course="Job Preparation">Register Now</button></div></div></div>
     
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="font-bold text-lg text-white">Sankalpify</p>
+            <p class="mt-2">Fueling futures with skills that matter.</p>
+            <div class="mt-6">
+                <p class="uppercase text-sm font-semibold text-slate-300">Contact Us</p>
+                <div class="flex justify-center space-x-6 mt-4">
+                    <a href="#" class="hover:text-white" aria-label="Email"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+                    <a href="#" class="hover:text-white" aria-label="LinkedIn"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+                </div>
+            </div>
+            <p class="mt-8 text-sm">&copy; 2025 All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <div id="register-modal" class="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 opacity-0 pointer-events-none backdrop-blur-sm">
+        <div class="card w-full max-w-lg p-8 relative" data-aos="fade-up" data-aos-duration="300">
+            <button id="modal-close" class="absolute top-4 right-4 text-slate-500 hover:text-violet-600">&times;</button>
+            <div class="flex justify-center items-center mx-auto w-12 h-12 rounded-full bg-violet-100 mb-4">
+                <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h3 class="text-2xl font-bold text-center">Register for a Course</h3>
+            <p class="text-center text-secondary text-sm mt-1">Submit your details to begin your learning journey!</p>
+            <form id="registration-form" class="mt-6 space-y-4">
+                <div><label for="name" class="block text-sm font-medium text-secondary">Full Name</label><input type="text" id="name" name="name" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-300" required pattern="[A-Za-z\s]+" title="Please enter only letters and spaces."></div>
+                <div><label for="college" class="block text-sm font-medium text-secondary">College/University Name</label><input type="text" id="college" name="college" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-300" required></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label for="year" class="block text-sm font-medium text-secondary">Year</label><input type="number" id="year" name="year" min="1" max="5" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-300" required></div>
+                    <div><label for="semester" class="block text-sm font-medium text-secondary">Semester</label><input type="number" id="semester" name="semester" min="1" max="8" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-300" required></div>
+                </div>
+                 <div><label for="phone" class="block text-sm font-medium text-secondary">Phone Number</label><input type="tel" id="phone" name="phone" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-300" required pattern="[6-9][0-9]{9}" title="Please enter a valid 10-digit Indian mobile number."></div>
+                <div><label for="email" class="block text-sm font-medium text-secondary">Email Address</label><input type="email" id="email" name="email" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-300" required></div>
+                <div>
+                    <label for="course" class="block text-sm font-medium text-secondary">Select Course</label>
+                    <select id="course" name="course" class="form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-2 focus:ring-violet-300" required>
+                        <option value="" disabled selected>Choose a course</option>
+                        <option value="Data Structures & Algorithms">Data Structures & Algorithms</option>
+                        <option value="Machine Learning">Machine Learning</option>
+                        <option value="Data Analysis">Data Analysis</option>
+                        <option value="Python Programming">Python Programming</option>
+                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                        <option value="LangChain & LLMs">LangChain & LLMs</option>
+                        <option value="Deep Learning">Deep Learning</option>
+                        <option value="Power BI">Power BI</option>
+                        <option value="Advanced Excel">Advanced Excel</option>
+                        <option value="SQL Mastery">SQL Mastery</option>
+                        <option value="Communication Skills">Communication Skills</option>
+                        <option value="Job Preparation">Job Preparation</option>
+                    </select>
+                </div>
+                <button type="submit" id="submit-button" class="w-full relative btn btn-shine bg-violet-600 text-white font-semibold py-3 rounded-lg hover:bg-violet-700 transition-colors">Submit Registration</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="success-toast" class="fixed top-6 right-6 flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow-lg space-x opacity-0 pointer-events-none transition-all duration-500 transform translate-x-12">
+        <div class="text-green-500"><svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></div>
+        <div class="pl-4 text-sm font-normal"><p class="font-bold text-gray-900">Registration Successful!</p><p class="text-gray-600">Our team will contact you shortly.</p></div>
+    </div>
+
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     AOS.init({ once: true, duration: 600, easing: 'ease-out-cubic' });
 
-    const docElement = document.documentElement;
-    const themeToggle = document.getElementById('theme-toggle');
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const pages = document.querySelectorAll('.page');
     const navLinks = document.querySelectorAll('.nav-link, .nav-link-main, .nav-link-action, .mobile-nav-link');
-    let pageInitialized = { gallery: false };
-
-    const applyTheme = (theme) => {
-        docElement.classList.toggle('dark', theme === 'dark');
-        document.getElementById('theme-icon-sun').classList.toggle('hidden', theme === 'dark');
-        document.getElementById('theme-icon-moon').classList.toggle('hidden', theme !== 'dark');
-    };
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    applyTheme(currentTheme);
-
-    themeToggle.addEventListener('click', () => {
-        const newTheme = docElement.classList.contains('dark') ? 'light' : 'dark';
-        localStorage.setItem('theme', newTheme);
-        applyTheme(newTheme);
-    });
 
     mobileMenuButton.addEventListener('click', () => {
         mobileMenu.classList.toggle('opacity-0');
@@ -278,16 +286,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (activePage) {
             activePage.classList.add('active');
         } else {
-            // Fallback to home page if ID is invalid
             document.getElementById('page-home').classList.add('active');
         }
         window.scrollTo(0, 0);
         setTimeout(() => AOS.refresh(), 50);
-        
-        if (pageId === 'gallery' && !pageInitialized.gallery) { 
-            initGallery(); 
-            pageInitialized.gallery = true; 
-        }
         
         document.querySelectorAll('.nav-link, .nav-link-main').forEach(link => {
             const linkHref = link.getAttribute('href');
@@ -300,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const handleNavigation = (e) => {
         const href = e.currentTarget.getAttribute('href');
-        // Only prevent default for internal hash links, which all start with #
         if (href && href.startsWith('#')) {
             e.preventDefault();
             window.location.hash = href.substring(1);
@@ -308,38 +309,91 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const handleHashChange = () => {
-        // Use 'home' as default if hash is empty or invalid
         const pageId = window.location.hash.substring(1) || 'home';
         showPage(pageId);
     };
 
-    // Attach event listeners
     navLinks.forEach(link => link.addEventListener('click', handleNavigation));
     window.addEventListener('hashchange', handleHashChange);
     
-    // Initial page load
     handleHashChange();
 
-    function initGallery() {
-        const galleryGrid = document.getElementById('gallery-grid');
-        // === EDIT THIS ARRAY TO CHANGE YOUR GALLERY PHOTOS ===
-        const images = [ 'gallery1.jpg', 'gallery2.jpg', 'gallery3.jpg', 'gallery4.jpg' ];
-        // =====================================================
-        galleryGrid.innerHTML = '';
-        images.forEach((src, index) => {
-            const div = document.createElement('div');
-            div.className = 'aspect-w-1 aspect-h-1 overflow-hidden rounded-lg transform hover:scale-105 transition-transform duration-300 shadow-lg';
-            div.setAttribute('data-aos', 'fade-up');
-            div.setAttribute('data-aos-delay', (index % 4) * 100);
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = `Gallery image ${index + 1}`;
-            img.className = 'w-full h-full object-cover';
-            img.onerror = () => { img.src = `https://placehold.co/400x400/ef4444/ffffff?text=Image+Not+Found`; };
-            div.appendChild(img);
-            galleryGrid.appendChild(div);
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby96jopz03paWu7JF7mf7JHOeJWFfer3BSnaaif7dDePxlH0EfZx2-jbl4BUL1k8bxL/exec';
+    const registerModal = document.getElementById('register-modal');
+    const modalCloseBtn = document.getElementById('modal-close');
+    const registerBtns = document.querySelectorAll('.register-btn');
+    const registrationForm = document.getElementById('registration-form');
+    const submitButton = document.getElementById('submit-button');
+    const courseSelect = document.getElementById('course');
+    const successToast = document.getElementById('success-toast');
+
+    const openRegisterModal = (courseName) => {
+        if (courseName) {
+            courseSelect.value = courseName;
+        } else {
+            courseSelect.value = "";
+        }
+        registerModal.classList.remove('opacity-0', 'pointer-events-none');
+    };
+    
+    const closeRegisterModal = () => {
+        registerModal.classList.add('opacity-0', 'pointer-events-none');
+    };
+
+    registerBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const course = btn.getAttribute('data-course');
+            openRegisterModal(course);
         });
-    }
+    });
+
+    modalCloseBtn.addEventListener('click', closeRegisterModal);
+    registerModal.addEventListener('click', (e) => {
+        if (e.target === registerModal) {
+            closeRegisterModal();
+        }
+    });
+
+    registrationForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        if (SCRIPT_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+            alert('Form is not configured yet. Please contact the site administrator.');
+            return;
+        }
+
+        const originalButtonText = submitButton.textContent;
+        submitButton.innerHTML = '';
+        submitButton.classList.add('button-loading');
+        submitButton.disabled = true;
+
+        const formData = new FormData(registrationForm);
+        
+        fetch(SCRIPT_URL, { method: 'POST', body: formData })
+        .then(response => response.json())
+        .then(data => {
+            if (data.result === 'success') {
+                registrationForm.reset();
+                closeRegisterModal();
+                successToast.classList.add('show');
+                setTimeout(() => {
+                    successToast.classList.remove('show');
+                }, 5000);
+            } else {
+                // This will catch errors reported by the script, like a bad sheet name
+                throw new Error(data.error || 'Unknown error from script');
+            }
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            alert('There was an error submitting your registration. Please try again.');
+        })
+        .finally(() => {
+            submitButton.innerHTML = originalButtonText;
+            submitButton.classList.remove('button-loading');
+            submitButton.disabled = false;
+        });
+    });
 });
 </script>
 </body>
